@@ -7,7 +7,7 @@ honey_df <- read.csv("honeyproduction.csv")
 
 #---------------Climate change dataset cleaning-----------------
 wa_climate_df <- climate_df %>% 
-  filter(Country == "United States", State == "Washington")
+  filter(Country == "United States")
 
 #remove months and dates and deleted dt column
 wa_climate_df <- wa_climate_df %>% 
@@ -19,9 +19,9 @@ wa_climate_df <- wa_climate_df %>%
   mutate(year_numeric = as.numeric(date)) %>% 
   select(-date)
 
-#filter 1998 - 2012
+#filter 2001 - 2012
 wa_climate_df <- wa_climate_df %>% 
-  filter(year_numeric >= 1998 & year_numeric <= 2012)
+  filter(year_numeric >= 2000 & year_numeric <= 2012)
 
 #remove this column
 wa_climate_df <- wa_climate_df %>% 
@@ -31,7 +31,7 @@ wa_climate_df <- wa_climate_df %>%
 #New summarized column
 wa_climate_df <- wa_climate_df %>%
   group_by(year_numeric) %>%
-  mutate(avg_temp = mean(AverageTemperature))
+  mutate(avg_temp =round(mean(AverageTemperature),0))
 
 #group by year
 wa_climate_df<- wa_climate_df %>% 
@@ -45,8 +45,8 @@ wa_honey_df <- honey_df %>%
 #--------------Join Data-----------------
 state_name_abv_df <- data.frame(State.Code = state.abb, State.Name = state.name)
 abv_df <- left_join(wa_climate_df, state_name_abv_df, by = c("State" = "State.Name"))
-cleaned_df <- left_join(abv_df, wa_honey_df, by = c("State.Code" = "state", "year_numeric" = "year"))
-
+cleaned_df <- left_join(abv_df, honey_df, by = c("State.Code" = "state", "year_numeric" = "year"))
+cleaned_df<- na.omit(cleaned_df)
 cleaned_df <- cleaned_df %>% 
   select(-State)
 
@@ -59,4 +59,4 @@ cleaned_df <- cleaned_df %>%
 cleaned_df <- cleaned_df %>% 
   mutate(stocks_value = stocks * priceperlb)
 
-write.csv(cleaned_df, file = "~/Documents/UW/Info 201/Info201-Final/cleaned_df.csv", row.names = FALSE)
+write.csv(cleaned_df, file = "~/Desktop/cleaned_df.csv", row.names = FALSE)
