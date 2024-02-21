@@ -1,6 +1,7 @@
 rm(list = ls())
 library(tidyverse)
 library(stringr)
+library(ggplot2)
 
 climate_df <- read.csv("GlobalLandTemperaturesByState.csv")
 honey_df <- read.csv("honeyproduction.csv")
@@ -59,4 +60,20 @@ cleaned_df <- cleaned_df %>%
 cleaned_df <- cleaned_df %>% 
   mutate(stocks_value = stocks * priceperlb)
 
+#Change col name
+colnames(cleaned_df)[4] <- c('state')
+
 write.csv(cleaned_df, file = "~/Desktop/cleaned_df.csv", row.names = FALSE)
+#-------------ggplot-----------
+#plot one
+ggplot(data = cleaned_df)+
+  geom_point(aes(x = year_numeric, y =priceperlb, color = state)) +
+  scale_x_continuous(breaks = seq(2000, 2012, 2))
+
+#plot two
+install.packages("usmap")
+library(usmap)
+plot_usmap(data = cleaned_df, values = "avg_temp", include = c("AL","AR","AZ","CA","CO","FL","HI","IA","ID","IL","IN","KS","KY","LA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NJ","NM","NV","NY","OH","OK","OR","PA","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY"), color = "blue") +
+  scale_fill_continuous(low = "white", high = "blue", name = "Average Temperature in US", label = scales::comma) + 
+  labs(title = "United States", subtitle = "Average temperature yearly for each state") +
+  theme(legend.position = "right")
