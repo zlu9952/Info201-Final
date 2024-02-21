@@ -1,4 +1,4 @@
-"Country","year_numeric","avg_temp","State.Code","numcol","yieldpercol","totalprod","stocks","priceperlb","prodvalue","is_yield_above_average","stocks_value"
+"Country","year_numeric","avg_temp","state","numcol","yieldpercol","totalprod","stocks","priceperlb","prodvalue","is_yield_above_average","stocks_value"
 "United States",2000,11,"AL",16000,78,1248000,187000,0.59,736000,TRUE,110330
 "United States",2001,12,"AL",14000,73,1022000,235000,0.72,736000,TRUE,169200
 "United States",2002,12,"AL",12000,86,1032000,103000,1.18,1218000,TRUE,121540
