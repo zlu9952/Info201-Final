@@ -4,7 +4,15 @@ library(bslib)
 df <- read.csv("cleaned_df.csv")
 ## OVERVIEW TAB INFO
 
-overview_tab <- tabPanel("Climate Change & Honey",
+# Manually Determine a BootSwatch Theme
+my_theme <- bs_theme(bg = "#f5c77e", #background color
+                     fg = "#883000", #foreground color
+                     primary = "white", # primary color
+) 
+# Update BootSwatch Theme
+#my_theme <- bs_theme_update(my_theme, bootswatch = "sketchy") 
+
+overview_tab <- tabPanel("Introduction",
    h1("Some title"),
    p("some explanation")
 )
@@ -98,7 +106,9 @@ conclusion_tab <- tabPanel("Conclusion Tab Title",
 
 ## Overall UI Navbar
 
-ui <- navbarPage("Example Project Title",
+ui <- navbarPage(
+  theme = my_theme,
+  "Example Project Title",
   overview_tab,
   viz_1_tab,
   viz_2_tab,
