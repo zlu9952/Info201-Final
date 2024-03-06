@@ -1,5 +1,6 @@
 library(shiny)
 library(bslib)
+library(plotly)
 
 df <- read.csv("cleaned_df.csv")
 ## OVERVIEW TAB INFO
@@ -9,20 +10,19 @@ my_theme <- bs_theme(bg = "#f5c77e", #background color
                      fg = "#883000", #foreground color
                      primary = "white", # primary color
 ) 
-# Update BootSwatch Theme
-#my_theme <- bs_theme_update(my_theme, bootswatch = "sketchy") 
+
 
 overview_tab <- tabPanel("Introduction",
-   h1("Correlation between Honey Production and Climate Change"),
-   p("Our research endeavors to unravel the potential correlations between climate change and honey production in the United States from 2000 to 2012. We present the data through three distinctive graphs, including, average temperature trends, the number of bee colonies in each state, and the number of honey production across various states."),
-   h3("Major Questions:"),
-   p("What influence does climate change exert on honey production? How do fluctuations in average temperatures and bee colony numbers correlate with variations in honey production and pricing?"),
-   h3("Data Sources:"),
-   p("The data utilized in this study is sourced from https://www.kaggle.com/datasets/jessicali9530/honey-production and https://www.kaggle.com/datasets/berkeleyearth/climate-change-earth-surface-temperature-data?select=GlobalLandTemperaturesByCountry.csv. The first dataset provides information on honey production from 1998 to 2012. The second dataset provides global climate change in average temperature from 1743 to 2013. For comparison, we have combined the two datasets and matched dates for better visualization"),
-   p("Ethical Considerations and Limitations: While conducting our analysis, we remain mindful of potential ethical questions associated with data usage. The limitations of the dataset may include incomplete or unavailable information for certain states. We encourage a thoughtful consideration of these aspects in the interpretation of our findings."),
-   img(src = "https://www.honeysource.com/wp-content/uploads/2023/02/HoneySourceByGlorybee-217412-Largest-Honey-Countries-Blogbanner1.jpg", alt = "Visual Representation"),
+                h1("Correlation between Honey Production and Climate Change"),
+                p("Our research endeavors to unravel the potential correlations between climate change and honey production in the United States from 2000 to 2012. We present the data through three distinctive graphs, including, average temperature trends, the number of bee colonies in each state, and the number of honey production across various states."),
+                h3("Major Questions:"),
+                p("What influence does climate change exert on honey production? How do fluctuations in average temperatures and bee colony numbers correlate with variations in honey production and pricing?"),
+                h3("Data Sources:"),
+                p("The data utilized in this study is sourced from https://www.kaggle.com/datasets/jessicali9530/honey-production and https://www.kaggle.com/datasets/berkeleyearth/climate-change-earth-surface-temperature-data?select=GlobalLandTemperaturesByCountry.csv. The first dataset provides information on honey production from 1998 to 2012. The second dataset provides global climate change in average temperature from 1743 to 2013. For comparison, we have combined the two datasets and matched dates for better visualization"),
+                p("Ethical Considerations and Limitations: While conducting our analysis, we remain mindful of potential ethical questions associated with data usage. The limitations of the dataset may include incomplete or unavailable information for certain states. We encourage a thoughtful consideration of these aspects in the interpretation of our findings."),
+                img(src = "https://www.honeysource.com/wp-content/uploads/2023/02/HoneySourceByGlorybee-217412-Largest-Honey-Countries-Blogbanner1.jpg", alt = "Visual Representation"),
+   
 )
-
 
 ## VIZ 1 TAB INFO
 
@@ -140,7 +140,7 @@ conclusion_tab <- tabPanel("Conclusion",
 
 ui <- navbarPage(
   theme = my_theme,
-  "Climate Change and Honey Production in the US",
+  "Climate change and Honey production in the US",
   overview_tab,
   viz_1_tab,
   viz_2_tab,
