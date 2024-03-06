@@ -12,23 +12,28 @@ coord <- read.csv("US_GeoCode.csv")
 # Define server logic
 server <- function(input, output) {
   
+  output$image <- renderImage({
+    
+    list(src = "bee climate.jpg",
+         width = 450,
+         length = 450)
+    }, deleteFile = F)
+  
+  
   output$avg_temp_plot <- renderPlotly({ 
     
     select_df <- subset(df,year_numeric >= input$user_selection[1] & year_numeric <= input$user_selection[2])
-    
-    
     avg_temp_plot <- ggplot(data = select_df)+
       geom_line(mapping = aes(
         x = year_numeric,
         y = avg_temp)) +
       labs(
         x = "Year",
-        y = "Average temperature in celsius"
-      )
-    
-    
+        y = "Average temperature in celsius")
     return(ggplotly(avg_temp_plot))
   })
+  
+  
   
   # Reactive function to filter data based on selected year
   selected_year_data <- reactive({
@@ -56,6 +61,25 @@ server <- function(input, output) {
     
     ggplotly(p)
   })
+  
+  
+  
+  output$production_plot <- renderPlotly({
+
+    selected_df_state_year <-df %>% 
+                  filter(state %in% input$user_selection_state) %>% 
+                  subset(year_numeric >= input$user_selection_year[1] & year_numeric <= input$user_selection_year[2])
+    
+    plot_production_price <- ggplot(selected_df_state_year) +
+      geom_smooth(aes(x = priceperlb,
+                      y = totalprod))+
+      labs(x=  "Price per lb" ,
+           y = "Total production")
+   
+    
+    return(ggplotly(plot_production_price))
+  })  
+  
 }
 
 

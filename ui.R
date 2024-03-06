@@ -13,9 +13,16 @@ my_theme <- bs_theme(bg = "#f5c77e", #background color
 #my_theme <- bs_theme_update(my_theme, bootswatch = "sketchy") 
 
 overview_tab <- tabPanel("Introduction",
-   h1("Some title"),
-   p("some explanation")
+   h1("Correlation between Honey Production and Climate Change"),
+   p("Our research endeavors to unravel the potential correlations between climate change and honey production in the United States from 2000 to 2012. We present the data through three distinctive graphs, including, average temperature trends, the number of bee colonies in each state, and the number of honey production across various states."),
+   h3("Major Questions:"),
+   p("What influence does climate change exert on honey production? How do fluctuations in average temperatures and bee colony numbers correlate with variations in honey production and pricing?"),
+   h3("Data Sources:"),
+   p("The data utilized in this study is sourced from https://www.kaggle.com/datasets/jessicali9530/honey-production and https://www.kaggle.com/datasets/berkeleyearth/climate-change-earth-surface-temperature-data?select=GlobalLandTemperaturesByCountry.csv. The first dataset provides information on honey production from 1998 to 2012. The second dataset provides global climate change in average temperature from 1743 to 2013. For comparison, we have combined the two datasets and matched dates for better visualization"),
+   p("Ethical Considerations and Limitations: While conducting our analysis, we remain mindful of potential ethical questions associated with data usage. The limitations of the dataset may include incomplete or unavailable information for certain states. We encourage a thoughtful consideration of these aspects in the interpretation of our findings."),
+   img(src = "https://www.honeysource.com/wp-content/uploads/2023/02/HoneySourceByGlorybee-217412-Largest-Honey-Countries-Blogbanner1.jpg", alt = "Visual Representation"),
 )
+
 
 ## VIZ 1 TAB INFO
 
@@ -60,10 +67,15 @@ viz_2_sidebar <- sidebarPanel(
   sliderInput("year", "Select Year:", 
               min = min(df$year_numeric), 
               max = max(df$year_numeric),
-              value = min(df$year_numeric),
+              value = 2012,
               step = 1),
   h3("Description"),
-  p("This graph is a visualization of the number of bee colonies in each states in the US from year 2000 to 2012. *Please note that these states are removed due to their NA values in the dataset: Alaska, Nevada, Maryland, Delaware, Georgia, South Carolina, Rhode Island, New Hampshire, Connecticut, Massachusetts.  The changes are very gradual, due to the fact that certain states maintained fairly even number of bee colonies. ")
+  p("This graph is a visualization of the number of bee colonies in each states 
+    in the US from year 2000 to 2012. *Please note that these states are removed 
+    due to their NA values in the dataset: Alaska, Nevada, Maryland, Delaware, 
+    Georgia, South Carolina, Rhode Island, New Hampshire, Connecticut, Massachusetts.  
+    The changes are very gradual, due to the fact that certain states maintained 
+    fairly even number of bee colonies. ")
 )
 
 viz_2_main_panel <- mainPanel(
@@ -81,16 +93,33 @@ viz_2_tab <- tabPanel("Bee Colonies Visualization",
 ## VIZ 3 TAB INFO
 
 viz_3_sidebar <- sidebarPanel(
-  h2("Options for graph"),
+  h2("Comparing total honey production with price per pound"),
   #TODO: Put inputs for modifying graph here
+  
+  selectInput(
+    inputId = "user_selection_state",
+    label = "choose the state",
+    choices = df$state
+    ),
+  sliderInput(inputId = "user_selection_year",
+              label = "choose the year range",
+              max = 2012,
+              min = 2000,
+              value = c(2000, 2012)
+  ),
+  h3("Description"),
+  p("Depending on differnt states, honey production and honey price showcase different 
+    kinds of realtionships. North Dakota which is top honey production state in 
+    the US shows that when price of honey increased, honey production almost kept the same.")
 )
 
 viz_3_main_panel <- mainPanel(
-  h2("Vizualization 3 Title"),
-  # plotlyOutput(outputId = "your_viz_1_output_id")
+  h2("Comparison between production and price"),
+  plotlyOutput(outputId = "production_plot")
+  
 )
 
-viz_3_tab <- tabPanel("Viz 3 tab title",
+viz_3_tab <- tabPanel("Honey Production Visualization",
   sidebarLayout(
     viz_3_sidebar,
     viz_3_main_panel
@@ -99,16 +128,19 @@ viz_3_tab <- tabPanel("Viz 3 tab title",
 
 ## CONCLUSIONS TAB INFO
 
-conclusion_tab <- tabPanel("Conclusion Tab Title",
- h1("Some title"),
- p("some conclusions")
+conclusion_tab <- tabPanel("Conclusion",
+ h1("What’s the result?"),
+ p("In conclusion, the provided graphs suggest a significant correlation between climate change and honey production in the United States from 2000 to 2012. The average temperature changes along with the gradual changes in the number of bee colonies, highlight the sensitivity of honey production to environmental shifts. These findings emphasize the urgent need for further research and proactive measures to mitigate the adverse effects of climate change on the crucial honeybee industry, as it becomes increasingly clear that environmental shifts have a substantial and adverse influence on honey production."),
+ p("Our comprehensive analysis covering the period from 2000 to 2012 has produced strong evidence of a significant relationship between changes in climate and the complex dynamics of honey production in the United States. Interestingly, the noticeable increase in mean temperatures starting in 2008 coincides with a notable decline in honey production, highlighting the industry's vulnerability to the growing effects of climate change."),
+ p("Moreover, the slow but steady variations in the number of bee colonies found in different states provide insight into the complex interactions between bee populations and the results of honey production. Honey output is more steady in locations where colony numbers remain stable, while honey yields are greater in areas where bee populations change.  This complex relationship highlights how beekeeping techniques are interrelated and have an impact on honey output."),
+ p("The project also reveals a significant change in the honey consumption environment, with a growing reliance on imported honey. The reduction in the capacity for local production, in addition to a greater reliance on foreign suppliers, is an alarming indicator of the ongoing challenges that the American honey sector faces. This change can be seen by the effects of earlier problems, including Colony Collapse Disorder, which highlights the necessity of implementing resilient and sustainable beekeeping techniques.")
 )
 
 ## Overall UI Navbar
 
 ui <- navbarPage(
   theme = my_theme,
-  "Example Project Title",
+  "Climate Change and Honey Production in the US",
   overview_tab,
   viz_1_tab,
   viz_2_tab,
